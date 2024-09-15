@@ -48,8 +48,8 @@ describe('AdminUserService', () => {
 
   describe('createAdminUser', () => {
     it('should create a new admin user if one does not exist', async () => {
-      const adminEmail = 'admin@example.com'
-      const adminPassword = 'admin123'
+      const adminEmail = 'test@test.com'
+      const adminPassword = 'pass'
       const hashedPassword = 'hashedPassword'
 
       jest.spyOn(userModel, 'findOne').mockResolvedValue(null)
@@ -69,7 +69,7 @@ describe('AdminUserService', () => {
     })
 
     it('should not create a new admin user if one already exists', async () => {
-      const adminEmail = 'admin@example.com'
+      const adminEmail = 'test@test.com'
 
       jest.spyOn(userModel, 'findOne').mockResolvedValue({} as any)
       jest.spyOn(bcrypt, 'hash')

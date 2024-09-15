@@ -3,7 +3,8 @@ name: Deploy NestJS Application
 on:
   push:
     branches:
-      - main  # O la rama que desees usar para desplegar
+      - main
+      - dev
 
 jobs:
   build:
@@ -16,13 +17,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # O la versión de Node.js que estés utilizando
+          node-version: '18'  # O la versión de Node.js que estés utilizando
 
       - name: Install dependencies
         run: npm install
 
       - name: Run tests
         run: npm test
+        env:
+          MONGOURI: 'mongodb+srv://chemaUser:5EyQXaLBYhGLv9hH@cluster0.pcdwu.mongodb.net/FMP?retryWrites=true&w=majority&appName=Cluster0'
 
       - name: Build application
         run: npm run build

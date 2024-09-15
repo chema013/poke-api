@@ -12,8 +12,8 @@ export const SERVICE_DOMAINS = {
 
 export const MONGO = {
   URI: process.env.MONGOURI,
-  ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL || 'test@test.com',
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || 'pass'
 }
 
 export const HTTP_REQUEST_TIMEOUT = Number.parseInt(

@@ -14,7 +14,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "jest --runInBand --detectOpenHandles --forceExit --verbose",
-    "test:file": "jest --runInBand --detectOpenHandles --verbose --coverage --forceExit test/Infraestructure/adapterAuth/strategies/refresh.strategy.spec.ts",
+    "test:file": "jest --runInBand --detectOpenHandles --verbose --coverage --forceExit test/UsesCases/adminUser.service.spec.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --runInBand --detectOpenHandles --verbose --coverage --forceExit",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
