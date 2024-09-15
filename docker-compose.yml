@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    ports:
+      - '9000:9000'
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:h2:tcp://h2:9092/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+  h2:
+    image: oscarfonts/h2:latest
+    container_name: h2
+    ports:
+      - '9092:9092'
+    environment:
+      - H2_OPTIONS=-tcp -tcpAllowOthers -tcpPort 9092
+
+volumes:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
