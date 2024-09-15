@@ -23,6 +23,17 @@ services:
     environment:
       - H2_OPTIONS=-tcp -tcpAllowOthers -tcpPort 9092
 
+  setup:
+    image: curlimages/curl:latest
+    depends_on:
+      - sonarqube
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["/scripts/setup-sonarqube.sh"]
+    volumes:
+      - ./setup-sonarqube.sh:/scripts/setup-sonarqube.sh
+    environment:
+      - SONAR_URL=http://sonarqube:9000
+
 volumes:
   sonarqube_data:
   sonarqube_logs:
