@@ -68,7 +68,7 @@ jobs:
 
       - name: Verify application is running
         run: |
-          curl --silent --fail http://localhost:3000 || exit 1
+          curl --silent --fail http://localhost:3000/api/pokemon/v1/pokemon?page=1 || exit 1
 
       - name: Clean up
         run: docker-compose down

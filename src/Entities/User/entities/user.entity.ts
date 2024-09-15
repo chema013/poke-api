@@ -9,7 +9,7 @@ import {
 
 export type UserDocument = HydratedDocument<User>
 
-@Schema()
+@Schema({ timestamps: true })
 export class User {
   @Prop()
   id: number

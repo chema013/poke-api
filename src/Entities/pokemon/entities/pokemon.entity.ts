@@ -5,7 +5,7 @@ import { User } from '../../User/entities/user.entity'
 
 export type UserDocument = HydratedDocument<User>
 
-@Schema()
+@Schema({ timestamps: true })
 export class Pokemon {
   @Prop({ type: String })
   name: string

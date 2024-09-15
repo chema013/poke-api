@@ -64,7 +64,9 @@ export class UserRepository implements IUserRepository {
       .find()
       .skip(skip)
       .limit(pageSize)
-      .select('-password -__v -_id -pokemons -location._id -refreshToken')
+      .select(
+        '-password -__v -_id -pokemons -location._id -refreshToken -location.createdAt -location.updatedAt -createdAt -updatedAt'
+      )
       .exec()
     const totalUsers = await this.userModel.countDocuments()
 
@@ -81,7 +83,13 @@ export class UserRepository implements IUserRepository {
       _id: 0,
       refreshToken: 0,
       'pokemons._id': 0,
-      'location._id': 0
+      'location._id': 0,
+      'location.createdAt': 0,
+      'location.updatedAt': 0,
+      'pokemons.createdAt': 0,
+      'pokemons.updatedAt': 0,
+      createdAt: 0,
+      updatedAt: 0
     }
 
     if (!includePassword) {
@@ -117,7 +125,9 @@ export class UserRepository implements IUserRepository {
     try {
       return await this.userModel
         .findOneAndUpdate({ email }, { $set: updateUserDto }, { new: true })
-        .select('-password -__v -_id -pokemons -location._id -refreshToken')
+        .select(
+          '-password -__v -_id -pokemons -location._id -refreshToken -location.createdAt -location.updatedAt -createdAt -updatedAt'
+        )
         .exec()
     } catch (error) {
       this.logger.error(error)
@@ -143,7 +153,9 @@ export class UserRepository implements IUserRepository {
           { $set: { password: hashedPassword } },
           { new: true }
         )
-        .select('-password -__v -_id -pokemons -location._id -refreshToken')
+        .select(
+          '-password -__v -_id -pokemons -location._id -refreshToken -location.createdAt -location.updatedAt -createdAt -updatedAt'
+        )
         .exec()
     } catch (error) {
       this.logger.error(error)
@@ -161,7 +173,9 @@ export class UserRepository implements IUserRepository {
 
     return this.userModel
       .findOneAndUpdate({ email }, { $set: location }, { new: true })
-      .select('-password -__v -_id -pokemons -location._id -refreshToken')
+      .select(
+        '-password -__v -_id -pokemons -location._id -refreshToken -location.createdAt -location.updatedAt -createdAt -updatedAt'
+      )
       .exec()
   }
 
@@ -177,7 +191,9 @@ export class UserRepository implements IUserRepository {
         { $push: { pokemons: { $each: pokemons } } },
         { new: true }
       )
-      .select('-password -__v -_id -location._id -pokemons._id -refreshToken')
+      .select(
+        '-password -__v -_id -location._id -pokemons._id -refreshToken -location.createdAt -location.updatedAt -pokemons.createdAt -pokemons.updatedAt -createdAt -updatedAt'
+      )
       .exec()
   }
 
@@ -202,7 +218,9 @@ export class UserRepository implements IUserRepository {
         { $pull: { pokemons: { name } } },
         { new: true }
       )
-      .select('-password -__v -_id -pokemons._id -location._id -refreshToken')
+      .select(
+        '-password -__v -_id -pokemons._id -location._id -refreshToken -location.createdAt -location.updatedAt -pokemons.createdAt -pokemons.updatedAt -createdAt -updatedAt'
+      )
       .exec()
   }
 
@@ -223,7 +241,9 @@ export class UserRepository implements IUserRepository {
         email: searchEmail,
         $expr: { $ne: [searchEmail, ignoreEmail] }
       })
-      .select('-password -__v -_id -pokemons -location._id')
+      .select(
+        '-password -__v -_id -pokemons -location._id -location.createdAt -location.updatedAt -createdAt -updatedAt'
+      )
       .exec()
   }
 

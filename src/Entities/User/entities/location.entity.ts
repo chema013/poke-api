@@ -5,7 +5,7 @@ import { User } from './user.entity'
 
 export type UserDocument = HydratedDocument<User>
 
-@Schema()
+@Schema({ timestamps: true })
 export class Location {
   @Prop({ type: Number })
   latitude: number
