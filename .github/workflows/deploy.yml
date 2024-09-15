@@ -44,10 +44,30 @@ jobs:
         env:
           MONGOURI: 'mongodb+srv://chemaUser:5EyQXaLBYhGLv9hH@cluster0.pcdwu.mongodb.net/FMP?retryWrites=true&w=majority&appName=Cluster0'
 
+      - name: Wait for SonarQube to be ready
+        run: |
+          echo "Waiting for SonarQube to be ready..."
+          for i in $(seq 1 30); do
+            if curl --silent --fail http://localhost:9000/api/system/health | grep '"status":"UP"'; then
+              echo "SonarQube is ready!"
+              exit 0
+            fi
+            echo "SonarQube not ready yet, waiting..."
+            sleep 10
+          done
+          echo "SonarQube did not become ready in time"
+          exit 1
+
+      - name: Install SonarQube Scanner
+        run: |
+          curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonar-scanner-cli.zip
+          export PATH=$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin
+
       - name: Run SonarQube scan
         env:
           SONAR_HOST_URL: http://localhost:9000
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Coloca el token en los secretos del repo
+          SONAR_TOKEN: sqa_033c95798ee7a44985988c080fe2be8eca93e193
         run: |
           docker-compose up -d sonarqube h2
           sleep 60 # Esperar a que SonarQube esté disponible
