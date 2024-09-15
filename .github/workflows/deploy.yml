@@ -44,20 +44,6 @@ jobs:
         env:
           MONGOURI: 'mongodb+srv://chemaUser:5EyQXaLBYhGLv9hH@cluster0.pcdwu.mongodb.net/FMP?retryWrites=true&w=majority&appName=Cluster0'
 
-      - name: Wait for SonarQube to be ready
-        run: |
-          echo "Waiting for SonarQube to be ready..."
-          for i in $(seq 1 30); do
-            if curl --silent --fail http://localhost:9000/api/system/health | grep '"status":"UP"'; then
-              echo "SonarQube is ready!"
-              exit 0
-            fi
-            echo "SonarQube not ready yet, waiting..."
-            sleep 10
-          done
-          echo "SonarQube did not become ready in time"
-          exit 1
-
       - name: Install SonarQube Scanner
         run: |
           curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
