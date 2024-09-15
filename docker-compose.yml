@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # SonarQube para análisis de calidad de código
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
@@ -23,16 +24,24 @@ services:
     environment:
       - H2_OPTIONS=-tcp -tcpAllowOthers -tcpPort 9092
 
-  setup:
-    image: curlimages/curl:latest
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest_app
     depends_on:
       - sonarqube
-    entrypoint: ["/bin/sh", "-c"]
-    command: ["/scripts/setup-sonarqube.sh"]
-    volumes:
-      - ./setup-sonarqube.sh:/scripts/setup-sonarqube.sh
+    ports:
+      - '3000:8080'
     environment:
-      - SONAR_URL=http://sonarqube:9000
+      - CONTEXT_NAME=${CONTEXT_NAME}
+      - VERSION=${VERSION}
+      - TZ=${TZ}
+      - POKEAPI_URL=${POKEAPI_URL}
+      - MONGOURI=${MONGOURI}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    command: npm run start:prod
 
 volumes:
   sonarqube_data:

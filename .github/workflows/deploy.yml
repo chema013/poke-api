@@ -7,8 +7,17 @@ on:
       - dev
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
+    services:
+      # Servicios en GitHub Actions
+      docker:
+        image: docker:20.10.7
+        options: --privileged
+        ports:
+          - 3000:8080
+          - 9000:9000
 
     steps:
       - name: Checkout code
@@ -25,7 +34,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # O la versión de Node.js que estés utilizando
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -35,15 +44,21 @@ jobs:
         env:
           MONGOURI: 'mongodb+srv://chemaUser:5EyQXaLBYhGLv9hH@cluster0.pcdwu.mongodb.net/FMP?retryWrites=true&w=majority&appName=Cluster0'
 
-      - name: Build application
-        run: npm run build
-
-      - name: Build Docker image
-        run: docker build -t my-nest-app .
-
-      - name: Build and Run Docker Compose
+      - name: Run SonarQube scan
+        env:
+          SONAR_HOST_URL: http://localhost:9000
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Coloca el token en los secretos del repo
         run: |
-          docker-compose up -d
+          docker-compose up -d sonarqube h2
+          sleep 60 # Esperar a que SonarQube esté disponible
+          sonar-scanner \
+            -Dsonar.projectKey=nest-app \
+            -Dsonar.sources=./src \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_TOKEN
+
+      - name: Build Docker image for application
+        run: docker-compose up -d app
 
       - name: Verify application is running
         run: |

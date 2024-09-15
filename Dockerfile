@@ -4,10 +4,10 @@ FROM node:20
 # Crear un directorio de trabajo dentro del contenedor
 WORKDIR /usr/src/app
 
-# Copia el package.json y package-lock.json (o yarn.lock) para instalar las dependencias
+# Copia el package.json y el package-lock.json (si existe)
 COPY package*.json ./
 
-# Instala las dependencias
+# Instala las dependencias dentro del contenedor
 RUN npm install
 
 # Copia todo el código fuente al contenedor
