@@ -12,7 +12,7 @@ async function bootstrap() {
   const logger = new Logger()
 
   const app = await NestFactory.create(AppModule, {
-    logger: logger
+    logger
   })
 
   app.setGlobalPrefix(`${CONTEXT_NAME}/${VERSION}`)
