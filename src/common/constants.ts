@@ -2,8 +2,7 @@ export const GLOB = {
   PORT: process.env.BIND_PORT || process.env.PORT || 8080,
   CONTEXT_NAME: process.env.CONTEXT_NAME,
   VERSION: process.env.VERSION,
-  TZ: process.env.TIZ || 'America/Costa_Rica',
-  BIND: process.env.BIND
+  TZ: process.env.TIZ || 'America/Costa_Rica'
 }
 
 export const SERVICE_DOMAINS = {

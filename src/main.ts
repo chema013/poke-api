@@ -7,12 +7,12 @@ import { GLOB } from './common/constants'
 import { Logger } from './UsesCases/logger.service'
 
 async function bootstrap() {
-  const { CONTEXT_NAME, VERSION, BIND, PORT } = GLOB
+  const { CONTEXT_NAME, VERSION, PORT } = GLOB
 
-  const simpleLogger = new Logger()
+  const logger = new Logger()
 
   const app = await NestFactory.create(AppModule, {
-    logger: simpleLogger
+    logger: logger
   })
 
   app.setGlobalPrefix(`${CONTEXT_NAME}/${VERSION}`)
@@ -29,11 +29,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, docConfig)
   SwaggerModule.setup(`${CONTEXT_NAME}/${VERSION}/docs`, app, document)
 
-  await app.listen(PORT, BIND, () => {
-    simpleLogger.log(`BIND: ${BIND} BIND:PORT: ${PORT}`)
-    simpleLogger.log(
-      `Server running on ${BIND}:${PORT}/${CONTEXT_NAME}/${VERSION}`
-    )
+  await app.listen(PORT, '0.0.0.0', async () => {
+    const appUrl = await app.getUrl()
+    logger.log(`Server running on ${appUrl}/${CONTEXT_NAME}/${VERSION}`)
   })
 }
 bootstrap()

@@ -1,85 +1,167 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# API Pokemon - Proyecto NestJS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este proyecto es una API construida en NestJS que interactúa con la PokeAPI y utiliza MongoDB como base de datos. Además, incluye integración con SonarQube para análisis de código estático. La documentación de la API está disponible en Swagger en la siguiente ruta: [http://localhost:3000/api/pokemon/v1/docs](http://localhost:3000/api/pokemon/v1/docs), la cual podra ser accesible cuando se despliegue el proyecto.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descripcion general del proyecto
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+Este proyecto cuanta con 3 módulos: Auth, user o persona y pokemon.
+En el primer módulo se puede generar tokens de acceso a las rutas protegidas del proyecto que se detallan en la documentacion de swagger y tambien se puede refrescar los tokens los cuales tienen una hora de duracion y estan generados con jwt.
+Al levantar el proyecto valida si existe un usuario administrador generado y en caso contrario lo crea con las siguientes credenciales: 
 
 ```bash
-$ npm install
+{
+    "email": "chema_013@hotmail.com",
+    "password": "12345"
+}
 ```
 
-## Compile and run the project
+A su ves existen dos perfiles en el proyecto admin y user los cuales restringen ciertas rutas segun sea el caso y pérfil.
 
-```bash
-# development
-$ npm run start
+El módulo de usuarios o personas tiene toda la funcionalidad de crear, editar, ver y eliminar usuarios, asi como actualizar contraseña y agregar o eliminar pokemons y agregar o editar geolocalizacion al usuario.
 
-# watch mode
-$ npm run start:dev
+Por último esta el módulo de pokemons que consulta directamente apipokemon y ahi podemos consultar pokemons individuales o en masa estas rutas no estan protegidas.
 
-# production mode
-$ npm run start:prod
-```
+## Requisitos Previos
 
-## Run tests
+Antes de desplegar el proyecto localmente, asegúrate de tener instalados los siguientes programas en tu sistema:
 
-```bash
-# unit tests
-$ npm run test
+- **Docker Desktop** (para gestionar contenedores)
+- **Node.js v20**
+- **npm v10**
+- **Git**
 
-# e2e tests
-$ npm run test:e2e
+## Despliegue Local del Proyecto
 
-# test coverage
-$ npm run test:cov
-```
+Existen dos caminos para desplegar localmente el proyecto:
 
-## Resources
+### Camino 1: Uso de Docker Compose
 
-Check out a few resources that may come in handy when working with NestJS:
+1. **Renombrar el archivo de configuración**  
+   Cambia el nombre del archivo `example.env` a `.env` en el directorio raíz del proyecto. Asegúrate de que las siguientes variables de entorno estén definidas correctamente en este archivo:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+   ```bash
+   CONTEXT_NAME="api/pokemon"
+   VERSION="v1"
+   TZ="America/Mexico_City"
+   POKEAPI_URL='https://pokeapi.co'
+   MONGOURI='mongodb+srv://chemaUser:5EyQXaLBYhGLv9hH@cluster0.pcdwu.mongodb.net/FMP?retryWrites=true&w=majority&appName=Cluster0'
+   ADMIN_EMAIL='admin@example.com'
+   ADMIN_PASSWORD='admin123'
+   ```
 
-## Support
+2. **Preparar Docker Desktop**  
+   Asegúrate de que Docker Desktop esté en funcionamiento.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+3. **Ejecutar Docker Compose**  
+   Ejecuta el siguiente comando para levantar el proyecto junto con una instacia embebida SonarQube:
 
-## Stay in touch
+   ```bash
+   docker-compose up -d
+   ```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+   Esto levantará:
 
-## License
+   - Una instancia de **SonarQube** en el puerto `9000`.
+   - El proyecto de **API Pokemon** en el puerto `3000`.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+   Podrás hacer peticiones a la API usando Postman (archivo adjunto) o a través de la documentación de Swagger en [http://localhost:3000/api/pokemon/v1/docs](http://localhost:3000/api/pokemon/v1/docs).
+
+### Camino 2: Ejecución Manual
+
+1. **Configurar variables de entorno**  
+   Después de clonar el repositorio, abre una terminal `Git Bash` y ejecuta los siguientes comandos para agregar las variables de entorno:
+
+   ```bash
+   export CONTEXT_NAME="api/pokemon"
+   export VERSION="v1"
+   export TZ="America/Mexico_City"
+   export PORT=3000
+   export POKEAPI_URL='https://pokeapi.co'
+   export MONGOURI='mongodb+srv://chemaUser:5EyQXaLBYhGLv9hH@cluster0.pcdwu.mongodb.net/FMP?retryWrites=true&w=majority&appName=Cluster0'
+   export ADMIN_EMAIL='admin@example.com'
+   export ADMIN_PASSWORD='admin123'
+   ```
+
+2. **Instalar dependencias**  
+   En la misma terminal, instala las dependencias del proyecto ejecutando el siguiente comando:
+
+   ```bash
+   npm install
+   ```
+
+3. **Levantar el proyecto**
+
+   - Para levantar el proyecto en modo desarrollo, ejecuta:
+     ```bash
+     npm run start:dev
+     ```
+   - Para levantarlo en modo productivo, ejecuta:
+     ```bash
+     npm start
+     ```
+
+4. **Probar el proyecto**  
+   El proyecto estará disponible en el puerto `3000`. Puedes probarlo usando el Postman adjunto o accediendo a la documentación de Swagger en [http://localhost:3000/api/pokemon/v1/docs](http://localhost:3000/api/pokemon/v1/docs).
+
+## SonarQube - Análisis de Código
+
+Si deseas correr el análisis de SonarQube, sigue estos pasos:
+
+### Camino 1: Usando la instancia de SonarQube de Docker Compose
+
+1. **Ejecutar las pruebas unitarias**  
+   Ejecuta el siguiente comando para ejecutar las pruebas unitarias y generar un reporte de cobertura:
+
+   ```bash
+   npm run test:cov
+   ```
+
+2. **Configurar SonarQube**
+
+   - Accede a la instancia de SonarQube en [http://localhost:9000](http://localhost:9000).
+   - Inicia sesión con las credenciales predeterminadas:
+     - Usuario: `admin`
+     - Contraseña: `admin`
+   - Cambia la contraseña cuando te lo solicite.
+   - Ve a tu perfil (`My Account`) y selecciona la opción `Security`. Genera un nuevo token en el apartado `Generate Tokens`. El token debe ser global y sin fecha de expiración.
+   - Copia el token generado y pégalo en el archivo `sonar-project.properties` en la propiedad:
+     ```bash
+     sonar.login=TU_TOKEN_GENERADO
+     ```
+
+3. **Ejecutar el escaneo de SonarQube**  
+   Una vez configurado, ejecuta el siguiente comando para correr el escaneo:
+
+   ```bash
+   sonar-scanner
+   ```
+
+4. **Ver el reporte**  
+   Accede nuevamente a SonarQube en [http://localhost:9000](http://localhost:9000) para ver el reporte de análisis.
+
+### Camino 2: Usando otra instancia de SonarQube
+
+1. **Pruebas Unitarias**  
+   Ejecuta el siguiente comando:
+
+   ```bash
+   npm run test:cov
+   ```
+
+2. **Configurar SonarQube**  
+   Si estás usando una instancia diferente de SonarQube, sigue el mismo procedimiento que en el **Camino 1** para generar un token en esa instancia y configurarlo en el archivo `sonar-project.properties`.
+
+3. **Ejecutar el escaneo**  
+   Ejecuta:
+
+   ```bash
+   sonar-scanner
+   ```
+
+4. **Ver el reporte**  
+   Accede a la instancia de SonarQube en la dirección correspondiente para ver el análisis.
+
+## Notas adicionales
+
+- Asegúrate de que Docker Desktop esté en ejecución antes de utilizar Docker Compose.
+- Puedes modificar las variables de entorno según sea necesario para tu entorno específico.
