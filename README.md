@@ -136,6 +136,11 @@ Si deseas correr el análisis de SonarQube, sigue estos pasos:
    sonar-scanner
    ```
 
+   En el caso de que salga un error de que no existe el comando sonar-scanner, instalar de forma global sonar-scanner:
+   ```bash
+   npm install -g sonarqube-scanner
+   ```
+
 4. **Ver el reporte**  
    Accede nuevamente a SonarQube en [http://localhost:9000](http://localhost:9000) para ver el reporte de análisis.
 
@@ -156,6 +161,11 @@ Si deseas correr el análisis de SonarQube, sigue estos pasos:
 
    ```bash
    sonar-scanner
+   ```
+
+   En el caso de que salga un error de que no existe el comando sonar-scanner, instalar de forma global sonar-scanner:
+   ```bash
+   npm install -g sonarqube-scanner
    ```
 
 4. **Ver el reporte**  
