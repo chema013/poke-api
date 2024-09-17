@@ -107,6 +107,16 @@ Existen dos caminos para desplegar localmente el proyecto:
 
 Si deseas correr el análisis de SonarQube, sigue estos pasos:
 
+Requisitos previos:
+
+**Instalar dependencias**  
+   En una terminal en la raiz del proyecto, instala las dependencias del proyecto ejecutando el siguiente comando:
+
+   ```bash
+   npm install
+   ```
+
+
 ### Camino 1: Usando la instancia de SonarQube de Docker Compose
 
 1. **Ejecutar las pruebas unitarias**  
