@@ -185,3 +185,24 @@ Requisitos previos:
 
 - Asegúrate de que Docker Desktop esté en ejecución antes de utilizar Docker Compose.
 - Puedes modificar las variables de entorno según sea necesario para tu entorno específico.
+
+# Prueba de Python
+
+Se generó un pequeño proyecto de python controlado con CLI o linea de comandos el cual interactua con el usuario desplegando un menú de 3 opciones y solicitando datos, las opciones son 
+- 1. Generar JSON con todos los pokemons.
+- 2. Consultar pokemons con paginacion de 10 registros.
+- 3. Salir.
+
+## Levantar proyecto
+
+Para ejecutar el proyecto basta con tener instalado python e instalar la libreria de requests en caso de tenerla instalada:
+
+```bash
+   pip install requests
+```
+
+y correr el proyecto con el comando:
+
+```bash
+   python main.py
+```
